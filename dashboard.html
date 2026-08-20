@@ -356,6 +356,7 @@ a.kpi:hover,button.kpi:hover{border-color:var(--color-accent)}
   .dashgrid{grid-template-columns:minmax(0,2fr) minmax(0,1fr); align-items:start}
   .dashgrid .col-b{display:grid; gap:16px}
   .dashgrid .col-a{display:grid; gap:16px}
+  .dashgrid .col-a > *,.dashgrid .col-b > *{min-width:0}
 }
 @media(max-width:1023px){ .dashgrid > * {margin-bottom:0} .dashgrid{gap:16px} }
 
