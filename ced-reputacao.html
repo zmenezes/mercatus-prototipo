@@ -282,6 +282,9 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--color-ring);outl
 .btn.cta{background:var(--color-accent); color:var(--color-on-accent); border-color:transparent;
   text-decoration:none; font-weight:600}
 .btn.cta:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent; color:var(--color-muted-foreground);
+  border:1px solid var(--color-border); text-decoration:none; font-weight:500}
+.btn.ghost:hover{border-color:var(--color-accent); color:var(--color-accent)}
 /* tabela de poucas colunas não precisa de min-width */
 .tblwrap.estreita table{min-width:0}
 /* ===== Workspace (mesmo padrão de ced-work/fin-work/adm-work/sup-work) ===== */
@@ -314,9 +317,16 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--color-ring);outl
 .view:focus{outline:none}
 /* Sem regra genérica de link na base, <a> nu cai no azul do navegador e ignora o
    acento por perfil (D22). Aqui o link segue o acento do contexto. */
-a{color:var(--color-accent)}
-a:hover{text-decoration-thickness:2px}
-.marcador a{color:inherit}
+/* Convenção do projeto: link é distinguido por COR, não por sublinhado — as telas
+   antigas têm 23 `text-decoration:none` contra 5 sublinhados deliberados, todos em
+   texto corrido. Uma regra genérica de `a` sem zerar o decoration devolve o padrão
+   do navegador e sublinha a interface inteira. */
+a{color:var(--color-accent); text-decoration:none}
+a:hover{text-decoration:underline; text-underline-offset:2px}
+/* Exceção: link dentro de texto corrido continua sublinhado, senão só a cor o
+   distingue no meio da frase — insuficiente para quem não percebe a diferença. */
+.nota a,.sub a,.rodape a,.dica a,p a{text-decoration:underline; text-underline-offset:2px}
+.marcador a{color:inherit; text-decoration:underline; text-underline-offset:2px}
 .opt,.opt:hover{color:inherit}
 </style>
 
