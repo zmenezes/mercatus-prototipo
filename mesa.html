@@ -286,6 +286,7 @@ main{flex:1; min-width:0; padding:16px 16px calc(80px + env(safe-area-inset-bott
 .badge.info{background:var(--color-info-bg); color:var(--color-info)}
 .badge.warning{background:var(--color-warning-bg); color:var(--color-warning)}
 .badge.neutral{background:var(--color-neutral-bg); color:var(--color-neutral)}
+.badge.danger{background:var(--color-danger-bg); color:var(--color-danger)}
 .badge.accent{background:var(--color-accent-bg); color:var(--color-accent)}
 .badge.sm{font-size:12px; padding:1px 8px}
 .badge.rating{background:var(--color-neutral-bg); color:var(--color-foreground); font-family:'IBM Plex Mono',monospace}
@@ -624,6 +625,7 @@ body.confirm-mode .d-foot .confirm-step{display:flex; flex-direction:column; gap
       <h2 id="pipe-h">Leilões aderentes ao Mandato</h2>
       <button type="button" class="chip" data-f="venc" aria-pressed="false">Só Superadas</button>
       <button type="button" class="chip" data-f="semof" aria-pressed="false">Sem Oferta minha</button>
+      <button type="button" class="chip" data-f="expresso" aria-pressed="false" title="Filtra por qualidade jurídica do lastro — o aceite tácito circula com menor robustez que o expresso">Só aceite expresso</button>
       <span class="novas num" id="novas-chip" aria-live="polite"></span>
     </div>
 
@@ -767,28 +769,28 @@ const agora = Date.now();
 const OPS = [
   { id:'BRD-4821', ced:'Têxtil Floresta Ltda.', cedScore:812, sac:'Magazine Colibri S.A.', rating:'A',
     setor:'Varejo', face:97170, prazo:37, fim:agora + 4*60000 + 12000, melhor:1.44, minha:null, via:null,
-    liq:'48 de 49 em dia', conc:'Sacado usa 62% do sublimite' },
+    regime:'ESCRITURAL', manif:'EXPRESSO', liq:'48 de 49 em dia', conc:'Sacado usa 62% do sublimite' },
   { id:'BRD-4833', ced:'AgroSerra Insumos S.A.', cedScore:774, sac:'Cooperativa Vale Verde', rating:'B',
     setor:'Agro', face:184500, prazo:58, fim:agora + 9*60000 + 48000, melhor:1.61, minha:1.61, via:'book',
-    liq:'31 de 32 em dia', conc:'Sacado usa 18% do sublimite' },
+    regime:'ESCRITURAL', manif:'TACITO', liq:'31 de 32 em dia', conc:'Sacado usa 18% do sublimite' },
   { id:'BRD-4830', ced:'Pack Nobre Embalagens', cedScore:701, sac:'Rede Andrade Supermercados S.A.', rating:'A',
     setor:'Varejo', face:63200, prazo:29, fim:agora + 13*60000 + 20000, melhor:1.38, minha:1.38, via:'auto-bid',
-    liq:'22 de 24 em dia', conc:'Sacado usa 44% do sublimite' },
+    regime:'ESCRITURAL', manif:'EXPRESSO', liq:'22 de 24 em dia', conc:'Sacado usa 44% do sublimite' },
   { id:'BRD-4828', ced:'Fundição Aliança ME', cedScore:688, sac:'Metalúrgica Ipê S.A.', rating:'B',
     setor:'Indústria', face:42800, prazo:41, fim:agora + 6*60000 + 35000, melhor:1.47, minha:1.52, via:'manual',
-    liq:'17 de 19 em dia', conc:'Sacado usa 71% do sublimite' },
+    regime:'MERCANTIL', manif:null, liq:'17 de 19 em dia', conc:'Sacado usa 71% do sublimite' },
   { id:'BRD-4826', ced:'Distribuidora Lume Ltda.', cedScore:735, sac:'Farmacorp Distribuição Ltda.', rating:'A',
     setor:'Farma', face:118900, prazo:33, fim:agora + 17*60000 + 5000, melhor:1.41, minha:null, via:null,
-    liq:'40 de 41 em dia', conc:'Sacado usa 12% do sublimite' },
+    regime:'ESCRITURAL', manif:'TACITO', liq:'40 de 41 em dia', conc:'Sacado usa 12% do sublimite' },
   { id:'BRD-4824', ced:'Construtora Vega Ltda.', cedScore:719, sac:'Incorporadora Mirante S.A.', rating:'C',
     setor:'Construção', face:76400, prazo:64, fim:agora + 21*60000 + 40000, melhor:1.92, minha:null, via:null,
-    liq:'28 de 31 em dia', conc:'Sacado usa 9% do sublimite' },
+    regime:'MERCANTIL', manif:null, liq:'28 de 31 em dia', conc:'Sacado usa 9% do sublimite' },
 ];
 const CHEGADAS = [
   { emSeg:18, id:'BRD-4835', ced:'Laticínios Boa Vista', cedScore:756, sac:'Rede Andrade Supermercados S.A.', rating:'A',
-    setor:'Varejo', face:88300, prazo:35, durMin:180, melhor:1.49, liq:'12 de 12 em dia', conc:'Sacado usa 44% do sublimite' },
+    setor:'Varejo', face:88300, prazo:35, durMin:180, melhor:1.49, regime:'ESCRITURAL', manif:'EXPRESSO', liq:'12 de 12 em dia', conc:'Sacado usa 44% do sublimite' },
   { emSeg:47, id:'BRD-4836', ced:'Gráfica Horizonte ME', cedScore:694, sac:'Editora Planalto S.A.', rating:'B',
-    setor:'Indústria', face:37650, prazo:44, durMin:180, melhor:1.68, liq:'9 de 10 em dia', conc:'Sacado usa 22% do sublimite' },
+    setor:'Indústria', face:37650, prazo:44, durMin:180, melhor:1.68, regime:'ESCRITURAL', manif:'TACITO', liq:'9 de 10 em dia', conc:'Sacado usa 22% do sublimite' },
 ];
 // concorrentes melhorando taxas (dispara "superada" quando você está vencendo)
 const DISPUTAS = [
@@ -796,7 +798,7 @@ const DISPUTAS = [
   { emSeg:60, id:'BRD-4821', taxa:1.41 },
 ];
 
-let filtros = { venc:false, semof:false };
+let filtros = { venc:false, semof:false, expresso:false };
 let atual = null;      // Operação aberta no drawer
 let gatilho = null;    // botão que abriu o drawer (retorno de foco)
 let novas = 0;
@@ -811,6 +813,20 @@ function posBadge(o) {
   if (o.minha === o.melhor) return `<span class="badge info sm"><svg class="ic"><use href="#i-clock"/></svg>Empatada · desempate por chegada${via}</span>`;
   return `<span class="badge warning sm"><svg class="ic"><use href="#i-alert"/></svg>Superada · sua ${o.minha.toFixed(2).replace('.', ',')}%${via}</span>`;
 }
+/* D29 — Manifestação do Sacado: três estados juridicamente distintos, não um selo binário.
+   EXPRESSO reconhece operação/valor/vencimento; TACITO é o aceite presumido após 10 dias,
+   que circula com MENOR robustez jurídica; RECUSA bloqueia o Leilão salvo override de Mandato.
+   Só existe no regime ESCRITURAL — no MERCANTIL não há manifestação nativa. */
+const MANIF = {
+  EXPRESSO: { cls:'success', ic:'#i-check',  t:'Aceite expresso',  d:'Sacado reconheceu operação, valor e vencimento' },
+  TACITO:   { cls:'warning', ic:'#i-clock',  t:'Aceite tácito',    d:'10 dias sem manifestação · menor robustez jurídica que o expresso' },
+  RECUSA:   { cls:'danger',  ic:'#i-alert',  t:'Recusa',           d:'Vício de lastro presumido · fora do Leilão salvo override de Mandato' },
+};
+function manifBadge(o, sm = true) {
+  if (o.regime !== 'ESCRITURAL' || !o.manif) return '';
+  const m = MANIF[o.manif];
+  return `<span class="badge ${m.cls}${sm ? ' sm' : ''}" title="${m.d}"><svg class="ic"><use href="${m.ic}"/></svg>${m.t}</span>`;
+}
 function cdTxt(o) {
   const r = Math.max(0, o.fim - Date.now());
   const mm = Math.floor(r / 60000), ss = Math.floor((r % 60000) / 1000);
@@ -822,14 +838,14 @@ function opInner(o) {
       <span class="o-cd num ${ (o.fim - Date.now()) < 120000 ? 'warn' : ''}" data-cd>${cdTxt(o)}<small>restantes</small></span>
       <span class="o-body">
         <span class="o-top"><span class="o-ced">${o.ced}</span><span class="badge sm neutral">score ${o.cedScore}</span></span>
-        <span class="o-meta"><span>${o.sac}</span><span>Risco ${o.rating} · ${o.setor}</span><span class="mono">${o.id}</span></span>
+        <span class="o-meta"><span>${o.sac}</span><span>Risco ${o.rating} · ${o.setor}</span><span class="mono">${o.id}</span>${manifBadge(o)}</span>
         <span class="o-nums">
           <span class="o-face">${fmtBRL(o.face)}</span>
           <span class="o-best">prazo ${o.prazo}d · melhor <strong>${fmtTx(o.melhor)}</strong></span>
         </span>
         <span class="o-pos">${posBadge(o)}</span>
       </span>
-      <span class="cell"><span class="nome">${o.sac}</span><small>Risco ${o.rating} · ${o.setor}</small></span>
+      <span class="cell"><span class="nome">${o.sac}</span><small>Risco ${o.rating} · ${o.setor}</small>${manifBadge(o)}</span>
       <span class="cell num">${o.prazo} dias</span>
       <span class="cell right num">${fmtBRL(o.face)}</span>
       <span class="cell right num tx">${fmtTx(o.melhor)}</span>
@@ -843,7 +859,8 @@ function renderPipe(novaId) {
   const val = o => sortKey === 'fim' ? o.fim : sortKey === 'valor' ? o.face : o.melhor;
   const vis = vivos.filter(o =>
     (!filtros.venc || (o.minha !== null && o.minha > o.melhor)) &&
-    (!filtros.semof || o.minha === null))
+    (!filtros.semof || o.minha === null) &&
+    (!filtros.expresso || o.manif === 'EXPRESSO'))
     .sort((a, b) => (val(a) - val(b)) * sortDir);
   const focoBtn = document.activeElement?.closest?.('.row')?.dataset.id;
   ul.innerHTML = '';
@@ -918,7 +935,7 @@ function abrirDrawer(id) {
   atual = id;
   const o = OPS.find(x => x.id === id);
   document.getElementById('d-titulo').textContent = `${o.ced} → ${o.sac}`;
-  document.getElementById('d-sub').textContent = `${o.id} · Duplicata escritural · janela ${cdTxt(o)} · vence a menor taxa`;
+  document.getElementById('d-sub').textContent = `${o.id} · ${o.regime === 'ESCRITURAL' ? 'Duplicata escritural' : 'Duplicata mercantil'} · janela ${cdTxt(o)} · vence a menor taxa`;
   document.getElementById('of-revisar').disabled = false;
   document.getElementById('tx-err').classList.remove('show');
   document.getElementById('d-kv').innerHTML = `
@@ -927,10 +944,13 @@ function abrirDrawer(id) {
     <dt>Rating do Sacado</dt><dd>${o.rating} · ${o.setor}</dd>
     <dt>Score do Cedente</dt><dd>${o.cedScore} · ${o.liq}</dd>
     <dt>Melhor Oferta corrente</dt><dd id="d-melhor">${fmtTx(o.melhor)}</dd>
-    <dt>Modalidade</dt><dd>Pro solvendo</dd>`;
+    <dt>Modalidade</dt><dd>Pro solvendo</dd>
+    <dt>Regime</dt><dd>${o.regime === 'ESCRITURAL' ? 'Escritural' : 'Mercantil'}</dd>
+    <dt>Manifestação do Sacado</dt><dd>${o.regime === 'ESCRITURAL' ? manifBadge(o, false) + `<small class="caption" style="display:block;margin-top:4px">${MANIF[o.manif].d}</small>` : '<span class="caption">não se aplica — regime mercantil</span>'}</dd>`;
   document.getElementById('d-checks').innerHTML = `
     <li><svg class="ic"><use href="#i-shield"/></svg>Lastro fiscal verificado na SEFAZ hoje</li>
-    <li><svg class="ic"><use href="#i-shield"/></svg>Anti dupla cessão conferido na Registradora</li>
+    <li><svg class="ic"><use href="#i-shield"/></svg>Anti dupla cessão conferido na Registradora${o.regime === 'ESCRITURAL' ? ' (por IUD)' : ' (por chave de unicidade)'}</li>
+    ${o.regime === 'ESCRITURAL' ? '<li><svg class="ic"><use href="#i-shield"/></svg>Escriturado na Escrituradora eleita pelo Cedente</li>' : ''}
     <li><svg class="ic"><use href="#i-check"/></svg>Dentro do Mandato "${MANDATO.nome}"</li>
     <li class="${o.conc.includes('71') ? 'warn' : ''}"><svg class="ic"><use href="${o.conc.includes('71') ? '#i-alert' : '#i-check'}"/></svg>${o.conc}</li>`;
   const sugestao = Math.max(MANDATO.taxaMin, o.melhor - 0.03);
