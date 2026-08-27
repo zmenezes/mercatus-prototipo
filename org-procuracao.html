@@ -284,6 +284,34 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--color-ring);outl
 .btn.cta:hover{filter:brightness(1.08)}
 /* tabela de poucas colunas não precisa de min-width */
 .tblwrap.estreita table{min-width:0}
+/* ===== Workspace (mesmo padrão de ced-work/fin-work/adm-work/sup-work) ===== */
+.shell{display:flex; min-height:calc(100dvh - 56px)}
+.sidebar{display:none}
+@media(min-width:1024px){
+  .shell{min-height:calc(100dvh - 64px)}
+  .sidebar{display:flex; flex-direction:column; gap:2px; width:232px; flex:none; padding:16px 12px;
+    border-right:1px solid var(--color-border); background:var(--color-surface)}
+  .sidebar a{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-md);
+    color:var(--color-muted-foreground); text-decoration:none; font-size:14px; font-weight:500;
+    border-left:3px solid transparent}
+  .sidebar a:hover{background:var(--color-muted); color:var(--color-foreground)}
+  .sidebar a[aria-current="page"]{background:var(--color-accent-bg); color:var(--color-accent);
+    border-left-color:var(--color-accent)}
+  .sidebar .grupo{font-size:11px; text-transform:uppercase; letter-spacing:.08em; font-weight:600;
+    color:var(--color-muted-foreground); padding:14px 12px 4px}
+}
+.bottomnav{position:fixed; left:0; right:0; bottom:0; z-index:40; display:flex;
+  height:calc(56px + env(safe-area-inset-bottom)); padding-bottom:env(safe-area-inset-bottom);
+  background:var(--color-surface); border-top:1px solid var(--color-border)}
+.bottomnav a{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; font-size:11px; font-weight:500; text-decoration:none; color:var(--color-muted-foreground)}
+.bottomnav a[aria-current="page"]{color:var(--color-accent)}
+@media(min-width:1024px){ .bottomnav{display:none} }
+.shell main{flex:1; min-width:0; padding:20px 20px calc(84px + env(safe-area-inset-bottom))}
+@media(min-width:1024px){ .shell main{padding:26px 30px 40px} }
+.view{display:none; max-width:1080px}
+.view.active{display:block}
+.view:focus{outline:none}
 /* Sem regra genérica de link na base, <a> nu cai no azul do navegador e ignora o
    acento por perfil (D22). Aqui o link segue o acento do contexto. */
 a{color:var(--color-accent)}
@@ -388,7 +416,7 @@ a:hover{text-decoration-thickness:2px}
 <section class="pn-area"><h3>🔐 Superadmin</h3><ul class="pn-telas"><li><a href="sup-work.html">Workspace — app do perfil</a></li><li><a href="controle.html">Parâmetros (Leilão &amp; Take-rate)</a></li></ul><p class="pn-vistas">Vistas: <a href="sup-work.html#rbac">Usuários &amp; RBAC</a> &middot; <a href="sup-work.html#risco">Risco &amp; Compliance</a> &middot; <a href="sup-work.html#financiadores">Financiadores</a> &middot; <a href="sup-work.html#integracoes">Integrações</a> &middot; <a href="sup-work.html#auditoria">Auditoria</a></p></section>
 <section class="pn-area"><h3>🚪 Aquisição — funil de 21 passos (D18)</h3><ul class="pn-telas"><li><a href="fun-01.html">1. Boas-vindas</a></li><li><a href="fun-02.html">2. O que é antecipar</a></li><li><a href="fun-03.html">3. O preço cai na sua frente</a></li><li><a href="fun-04.html">4. Checagem de interesse</a></li><li><a href="fun-05.html">5. Objetivo — os três papéis</a></li><li><a href="fun-06.html">6. Já antecipa hoje?</a></li><li><a href="fun-07.html">7. Com quem antecipa</a></li><li><a href="fun-08.html">8. Faixa de faturamento</a></li><li><a href="fun-09.html">9. Setor</a></li><li><a href="fun-10.html">10. Tipo de instituição (Financiador)</a></li><li><a href="fun-11.html">11. Faixa de tíquete (Financiador)</a></li><li><a href="fun-12.html">12. Tipo de canal (Originador)</a></li><li><a href="fun-13.html">13. Tamanho da carteira (Originador)</a></li><li><a href="fun-14.html">14. Prazo médio</a></li><li><a href="fun-15.html">15. CNPJ</a></li><li><a href="fun-16.html">16. Representante legal</a></li><li><a href="fun-17.html">17. E-mail</a></li><li><a href="fun-18.html">18. Confirmação enviada</a></li><li><a href="fun-19.html">19. Telefone</a></li><li><a href="fun-20.html">20. Perfil detectado</a></li><li><a href="fun-21.html">21. Conta criada</a></li></ul></section>
 <section class="pn-area"><h3>🚫 Recusa por impedimento objetivo (D14)</h3><ul class="pn-telas"><li><a href="recusa-cnpj.html">CNPJ inapto na Receita</a></li><li><a href="recusa-existente.html">Empresa já cadastrada</a></li><li><a href="recusa-link.html">Link de convite expirado</a></li><li><a href="recusa-cpf.html">CPF divergente do quadro societário</a></li></ul></section>
-<section class="pn-area"><h3>🤝 Originador (D11/D20/D22)</h3><ul class="pn-telas"><li><a href="org-work.html">Painel do canal</a></li><li><a href="org-carteira.html">Carteira de Cedentes</a></li><li><a href="org-comissoes.html">Extrato de comissões</a></li><li><a href="org-nova-conta.html">Abrir conta de Cedente</a></li><li><a href="org-procuracao.html">Dentro da conta — poderes e marcador</a></li></ul></section>
+<section class="pn-area"><h3>🤝 Originador (D11/D20/D22)</h3><ul class="pn-telas"><li><a href="org-work.html">Workspace — app do perfil</a></li><li><a href="org-nova-conta.html">Abrir conta de Cedente</a></li><li><a href="org-procuracao.html">Dentro da conta — poderes e marcador</a></li></ul><p class="pn-vistas">Vistas: <a href="org-work.html#painel">Início</a> &middot; <a href="org-work.html#carteira">Carteira</a> &middot; <a href="org-work.html#procuracoes">Procurações</a> &middot; <a href="org-work.html#comissoes">Comissões</a> &middot; <a href="org-work.html#canal">Cadastro do canal</a></p></section>
 </div>
   </div>
 </div>

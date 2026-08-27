@@ -284,6 +284,34 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--color-ring);outl
 .btn.cta:hover{filter:brightness(1.08)}
 /* tabela de poucas colunas não precisa de min-width */
 .tblwrap.estreita table{min-width:0}
+/* ===== Workspace (mesmo padrão de ced-work/fin-work/adm-work/sup-work) ===== */
+.shell{display:flex; min-height:calc(100dvh - 56px)}
+.sidebar{display:none}
+@media(min-width:1024px){
+  .shell{min-height:calc(100dvh - 64px)}
+  .sidebar{display:flex; flex-direction:column; gap:2px; width:232px; flex:none; padding:16px 12px;
+    border-right:1px solid var(--color-border); background:var(--color-surface)}
+  .sidebar a{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-md);
+    color:var(--color-muted-foreground); text-decoration:none; font-size:14px; font-weight:500;
+    border-left:3px solid transparent}
+  .sidebar a:hover{background:var(--color-muted); color:var(--color-foreground)}
+  .sidebar a[aria-current="page"]{background:var(--color-accent-bg); color:var(--color-accent);
+    border-left-color:var(--color-accent)}
+  .sidebar .grupo{font-size:11px; text-transform:uppercase; letter-spacing:.08em; font-weight:600;
+    color:var(--color-muted-foreground); padding:14px 12px 4px}
+}
+.bottomnav{position:fixed; left:0; right:0; bottom:0; z-index:40; display:flex;
+  height:calc(56px + env(safe-area-inset-bottom)); padding-bottom:env(safe-area-inset-bottom);
+  background:var(--color-surface); border-top:1px solid var(--color-border)}
+.bottomnav a{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; font-size:11px; font-weight:500; text-decoration:none; color:var(--color-muted-foreground)}
+.bottomnav a[aria-current="page"]{color:var(--color-accent)}
+@media(min-width:1024px){ .bottomnav{display:none} }
+.shell main{flex:1; min-width:0; padding:20px 20px calc(84px + env(safe-area-inset-bottom))}
+@media(min-width:1024px){ .shell main{padding:26px 30px 40px} }
+.view{display:none; max-width:1080px}
+.view.active{display:block}
+.view:focus{outline:none}
 /* Sem regra genérica de link na base, <a> nu cai no azul do navegador e ignora o
    acento por perfil (D22). Aqui o link segue o acento do contexto. */
 a{color:var(--color-accent)}
@@ -296,33 +324,184 @@ a:hover{text-decoration-thickness:2px}
 
 <header class="appbar"><span class="marca">MERCATUS</span>
   <button class="ctxsel" type="button"><span><b>CONTÁBIL HORIZONTE</b><span>Originador · Painel do canal</span></span>▾</button>
-  <span class="espaco"></span>
-  <a href="org-carteira.html" style="font-size:13.5px">Carteira</a>
-  <a href="org-comissoes.html" style="font-size:13.5px">Comissões</a></header>
-<main id="conteudo" class="wrap larga">
-  <p class="bloco">Painel do canal</p>
-  <h1>Contábil Horizonte</h1>
-  <p class="sub">Identidade própria vale <strong>só aqui</strong>. Dentro da conta de um Cedente, a interface
-    assume a identidade dele com marcador de contexto (D22).</p>
-  <div class="grade c3">
-    <div class="bloco-card"><span class="kpi-lbl">Contas originadas</span><div class="kpi">5</div></div>
-    <div class="bloco-card"><span class="kpi-lbl">Operando</span><div class="kpi">2</div></div>
-    <div class="bloco-card"><span class="kpi-lbl">Comissão no mês</span><div class="kpi">R$ 4.180</div></div>
-  </div>
-  <h2>Funil de originação</h2>
-  <div class="tblwrap"><table>
-    <tr><th>Etapa</th><th class="num">Contas</th><th class="num">Conversão</th><th class="num">Tempo médio</th></tr>
-    <tr><td>Abertas</td><td class="num">5</td><td class="num">—</td><td class="num">—</td></tr>
-    <tr><td>Preenchimento</td><td class="num">1</td><td class="num">100%</td><td class="num">3 d</td></tr>
-    <tr><td>Em análise</td><td class="num">0</td><td class="num">80%</td><td class="num">2 d</td></tr>
-    <tr><td>Correção</td><td class="num">1</td><td class="num">—</td><td class="num">4 d</td></tr>
-    <tr><td>Verificação</td><td class="num">1</td><td class="num">75%</td><td class="num">6 d</td></tr>
-    <tr><td>Aprovadas</td><td class="num">2</td><td class="num">50%</td><td class="num">14 d</td></tr>
-  </table></div>
-  <div class="acoes"><a class="btn cta" href="org-nova-conta.html">Abrir conta de Cedente</a>
-    <a href="org-carteira.html" style="font-size:13.5px">Ver carteira completa</a></div>
-  <p class="rodape"><code>REQ-ORG-013/014</code> · acento do Originador <code>#0F766E</code> — design system §2.5.</p>
-</main>
+  <span class="espaco"></span></header>
+<div class="shell">
+  <nav class="sidebar" aria-label="Navegação do canal">
+    <a href="#painel" data-view="painel">Início</a>
+    <span class="grupo">Meus Cedentes</span>
+    <a href="#carteira" data-view="carteira">Carteira</a>
+    <a href="#procuracoes" data-view="procuracoes">Procurações</a>
+    <a href="org-nova-conta.html">Abrir conta</a>
+    <span class="grupo">Meu canal</span>
+    <a href="#comissoes" data-view="comissoes">Comissões</a>
+    <a href="#canal" data-view="canal">Cadastro e credenciamento</a>
+  </nav>
+  <main id="conteudo">
+
+    <!-- ═════════════════ Início ═════════════════ -->
+    <section class="view" id="v-painel" tabindex="-1">
+      <p class="bloco">Painel do canal</p>
+      <h1>Contábil Horizonte</h1>
+      <p class="sub">Identidade própria vale <strong>só aqui</strong>. Dentro da conta de um Cedente, a
+        interface assume a identidade dele com marcador de contexto (D22).</p>
+      <div class="grade c3">
+        <div class="bloco-card"><span class="kpi-lbl">Contas originadas</span><div class="kpi">5</div></div>
+        <div class="bloco-card"><span class="kpi-lbl">Operando</span><div class="kpi">2</div></div>
+        <div class="bloco-card"><span class="kpi-lbl">Comissão no mês</span><div class="kpi">R$ 4.180</div></div>
+      </div>
+      <h2>Funil de originação</h2>
+      <div class="tblwrap"><table>
+        <tr><th>Etapa</th><th class="num">Contas</th><th class="num">Conversão</th><th class="num">Tempo médio</th></tr>
+        <tr><td>Abertas</td><td class="num">5</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>Preenchimento</td><td class="num">1</td><td class="num">100%</td><td class="num">3 d</td></tr>
+        <tr><td>Em análise</td><td class="num">0</td><td class="num">80%</td><td class="num">2 d</td></tr>
+        <tr><td>Correção</td><td class="num">1</td><td class="num">—</td><td class="num">4 d</td></tr>
+        <tr><td>Verificação</td><td class="num">1</td><td class="num">75%</td><td class="num">6 d</td></tr>
+        <tr><td>Aprovadas</td><td class="num">2</td><td class="num">50%</td><td class="num">14 d</td></tr>
+      </table></div>
+      <h2>Precisa da sua ação</h2>
+      <div class="nota warn"><strong>Solar Bandeirante está em CORRECAO</strong> há 4 dias — comprovante de
+        endereço divergente. Você tem poder para anexar documentos nessa conta.</div>
+      <div class="nota info"><strong>Vidros Aparecida ainda não assinou a procuração.</strong> Até lá você
+        preenche dados, mas a conta não entra em EM_ANALISE (<code>REQ-ORG-007</code>).</div>
+      <div class="acoes"><a class="btn cta" href="org-nova-conta.html">Abrir conta de Cedente</a></div>
+      <p class="rodape"><code>REQ-ORG-013/014</code> · acento do Originador <code>#0F766E</code> — design system §2.5.</p>
+    </section>
+
+    <!-- ═════════════════ Carteira ═════════════════ -->
+    <section class="view" id="v-carteira" tabindex="-1">
+      <p class="bloco">Meus Cedentes</p>
+      <h1>Carteira</h1>
+      <p class="sub">Originadas geram comissão; vinculadas, não — a diferença é a Atribuição de Origem (D12).</p>
+      <div class="tblwrap"><table>
+        <tr><th>Empresa</th><th>CNPJ</th><th>Habilitação</th><th>Origem</th><th>Situação</th><th></th></tr><tr><td><strong>Têxtil Floresta Ltda.</strong></td><td class="mono">34.982.117/0001-56</td><td><span class="hab info">VERIFICACAO</span></td><td>Originada</td><td>Aguarda videochamada</td><td><a href="org-procuracao.html">Abrir conta &rarr;</a></td></tr><tr><td><strong>Solar Bandeirante</strong></td><td class="mono">37.204.881/0001-62</td><td><span class="hab warn">CORRECAO</span></td><td>Originada</td><td>Comprovante de endereço</td><td><a href="org-procuracao.html">Abrir conta &rarr;</a></td></tr><tr><td><strong>Boa Safra Alimentos</strong></td><td class="mono">52.118.640/0001-95</td><td><span class="hab ok">APROVADO</span></td><td>Originada</td><td>Operando</td><td><a href="org-procuracao.html">Abrir conta &rarr;</a></td></tr><tr><td><strong>Agro Vale Verde</strong></td><td class="mono">29.660.418/0001-73</td><td><span class="hab ok">APROVADO</span></td><td>Originada</td><td>Operando</td><td><a href="org-procuracao.html">Abrir conta &rarr;</a></td></tr><tr><td><strong>Vidros Aparecida</strong></td><td class="mono">18.556.037/0001-24</td><td><span class="hab neutro">PREENCHIMENTO</span></td><td>Originada</td><td>Documentos pendentes</td><td><a href="org-procuracao.html">Abrir conta &rarr;</a></td></tr><tr><td><strong>Metalvale Indústria</strong></td><td class="mono">21.774.902/0001-77</td><td><span class="hab ok">APROVADO</span></td><td>Vinculada</td><td>Sem comissão</td><td><a href="org-procuracao.html">Abrir conta &rarr;</a></td></tr>
+      </table></div>
+      <div class="nota"><strong>Metalvale é vinculada, não originada.</strong> A empresa já existia e
+        concedeu Vínculo a você — sem Atribuição de Origem, sem comissão. Isso fica visível antes de você
+        aceitar o Vínculo (<code>REQ-ORG-009</code>).</div>
+      <div class="nota info"><strong>Vidros Aparecida está sem Oferta compatível.</strong> Nenhum
+        Financiador com Mandato para o setor dela no tíquete atual. Não é bloqueio de Habilitação — é sinal
+        de mercado (D24.1).</div>
+      <p class="rodape"><code>REQ-ORG-013</code> · estados conforme <code>09-glossario.md §7.4</code>.</p>
+    </section>
+
+    <!-- ═════════════════ Procurações ═════════════════ -->
+    <section class="view" id="v-procuracoes" tabindex="-1">
+      <p class="bloco">Meus Cedentes</p>
+      <h1>Procurações</h1>
+      <p class="sub">Cada conta que você opera exige procuração eletrônica com poderes enumerados. O Cedente
+        pode revogar a qualquer momento, com efeito imediato (<code>REQ-ORG-004</code>).</p>
+      <div class="tblwrap"><table>
+        <tr><th>Cedente</th><th>Assinada</th><th>Válida até</th><th>Poderes</th><th>Situação</th></tr><tr><td><strong>Têxtil Floresta Ltda.</strong></td><td>05/08/2026</td><td>05/08/2027</td><td>Cadastro, Sacados, Borderô, Dossiê</td><td><span class="hab ok">vigente</span></td></tr><tr><td><strong>Solar Bandeirante</strong></td><td>11/07/2026</td><td>11/07/2027</td><td>Cadastro, Dossiê</td><td><span class="hab ok">vigente</span></td></tr><tr><td><strong>Boa Safra Alimentos</strong></td><td>02/04/2026</td><td>02/04/2027</td><td>Cadastro, Sacados, Borderô, Dossiê</td><td><span class="hab ok">vigente</span></td></tr><tr><td><strong>Agro Vale Verde</strong></td><td>19/02/2026</td><td>19/02/2027</td><td>Cadastro, Sacados, Borderô, Dossiê</td><td><span class="hab ok">vigente</span></td></tr><tr><td><strong>Vidros Aparecida</strong></td><td>24/08/2026</td><td>24/08/2027</td><td>Cadastro</td><td><span class="hab warn">aguarda assinatura</span></td></tr><tr><td><strong>Metalvale Indústria</strong></td><td>13/06/2026</td><td>13/06/2027</td><td>Dossiê, Relatórios</td><td><span class="hab ok">vigente</span></td></tr>
+      </table></div>
+      <h2>O que nenhuma procuração concede</h2>
+      <div class="grade c2">
+        <div class="vedado"><b>Aceitar Oferta</b><span>Só o representante legal do Cedente, autenticado na sessão.</span></div>
+        <div class="vedado"><b>Assinar Termo de Cessão</b><span>Ato indelegável — nenhuma configuração libera.</span></div>
+      </div>
+      <div class="nota warn">Revogação encerra seu acesso em tempo real, mas <strong>não</strong> extingue a
+        Atribuição de Origem nem a comissão devida pela vigência contratada (D12, <code>REQ-ORG-018</code>).</div>
+      <p class="rodape"><code>REQ-ORG-004/005/018</code> · reforço no servidor em <code>RNF-071</code>.</p>
+    </section>
+
+    <!-- ═════════════════ Comissões ═════════════════ -->
+    <section class="view" id="v-comissoes" tabindex="-1">
+      <p class="bloco">Meu canal</p>
+      <h1>Comissões</h1>
+      <p class="sub">Calculadas sobre Operações liquidadas de contas com Atribuição de Origem, pagas em D+1
+        da Liquidação (CORE-063).</p>
+      <div class="grade c3">
+        <div class="bloco-card"><span class="kpi-lbl">Bruto no mês</span><div class="kpi">R$ 4.640</div></div>
+        <div class="bloco-card"><span class="kpi-lbl">Retenções</span><div class="kpi">R$ 460</div></div>
+        <div class="bloco-card"><span class="kpi-lbl">Líquido</span><div class="kpi">R$ 4.180</div></div>
+      </div>
+      <div class="tblwrap"><table>
+        <tr><th>Operação</th><th>Cedente</th><th class="num">Deságio</th><th class="num">Base</th><th class="num">Comissão</th><th>Status</th></tr>
+        <tr><td class="mono">OP-2317</td><td>Boa Safra Alimentos</td><td class="num">R$ 8.400</td><td class="num">10%</td><td class="num">R$ 840</td><td><span class="hab ok">Pago</span></td></tr>
+        <tr><td class="mono">OP-2290</td><td>Agro Vale Verde</td><td class="num">R$ 21.000</td><td class="num">10%</td><td class="num">R$ 2.100</td><td><span class="hab ok">Pago</span></td></tr>
+        <tr><td class="mono">OP-2344</td><td>Boa Safra Alimentos</td><td class="num">R$ 17.000</td><td class="num">10%</td><td class="num">R$ 1.700</td><td><span class="hab info">Em D+1</span></td></tr>
+        <tr><td class="mono">OP-2201</td><td>Agro Vale Verde</td><td class="num">&minus;R$ 4.000</td><td class="num">10%</td><td class="num">&minus;R$ 400</td><td><span class="hab warn">Estorno &middot; Recompra</span></td></tr>
+      </table></div>
+      <div class="nota"><strong>A comissão sobrevive à revogação do acesso.</strong> Se um Cedente revogar
+        seu Vínculo, você perde a conta — mas a Atribuição de Origem permanece e a comissão segue devida
+        pela vigência contratada (D12, <code>REQ-ORG-018</code>).</div>
+      <p class="rodape"><code>REQ-ORG-016/017</code> · base e gatilho congelados no credenciamento
+        (<code>REQ-ORG-003</code>).</p>
+    </section>
+
+    <!-- ═════════════════ Meu canal ═════════════════ -->
+    <section class="view" id="v-canal" tabindex="-1">
+      <p class="bloco">Meu canal</p>
+      <h1>Cadastro e credenciamento</h1>
+      <p class="sub">Sua própria Habilitação, no mesmo núcleo comum dos outros perfis (D24) — sem
+        <code>VERIFICACAO</code>, que é exclusivo do Cedente.</p>
+      <div class="grade c2">
+        <div class="bloco-card"><span class="kpi-lbl">Habilitação</span>
+          <div style="margin-top:8px"><span class="hab ok">APROVADO</span></div>
+          <p class="sub" style="margin:10px 0 0;font-size:13.5px">Desde 12/02/2026 · tipo de canal:
+            escritório contábil</p></div>
+        <div class="bloco-card"><span class="kpi-lbl">Contrato de credenciamento</span>
+          <div style="margin-top:8px"><span class="hab neutro">v2.1 · aceito em 12/02/2026</span></div>
+          <p class="sub" style="margin:10px 0 0;font-size:13.5px">Regras econômicas congeladas nesta
+            versão; alteração exige novo aceite e não retroage (<code>REQ-ORG-003</code>).</p></div>
+      </div>
+      <h2>Regras econômicas vigentes</h2>
+      <div class="tblwrap estreita"><table>
+        <tr><th>Parâmetro</th><th>Valor</th></tr>
+        <tr><td>Base de cálculo</td><td>10% do deságio da Operação liquidada</td></tr>
+        <tr><td>Gatilho de pagamento</td><td>D+1 da Liquidação</td></tr>
+        <tr><td>Vigência da recorrência</td><td>24 meses por Cedente originado</td></tr>
+        <tr><td>Estorno</td><td>Proporcional, em Recompra ou reversão</td></tr>
+      </table></div>
+      <h2>Documentos do canal</h2>
+      <div class="tblwrap estreita"><table>
+        <tr><th>Documento</th><th>Situação</th></tr>
+        <tr><td>Contrato social</td><td><span class="hab ok">Aprovado</span></td></tr>
+        <tr><td>Registro no conselho (CRC)</td><td><span class="hab ok">Aprovado</span></td></tr>
+        <tr><td>Documento dos sócios</td><td><span class="hab ok">Aprovado</span></td></tr>
+        <tr><td>Comprovante de endereço</td><td><span class="hab warn">Vence em 22 dias</span></td></tr>
+      </table></div>
+      <p class="rodape"><code>REQ-ORG-001/002/003</code> · Habilitação conforme
+        <code>09-glossario.md §7.4</code>.</p>
+    </section>
+
+  </main>
+</div>
+<nav class="bottomnav" aria-label="Navegação do canal">
+  <a href="#painel" data-view="painel">Início</a>
+  <a href="#carteira" data-view="carteira">Carteira</a>
+  <a href="#procuracoes" data-view="procuracoes">Procurações</a>
+  <a href="#comissoes" data-view="comissoes">Comissões</a>
+  <a href="#canal" data-view="canal">Canal</a>
+</nav>
+<script>
+function mostrarVista(v) {
+  document.querySelectorAll('.view').forEach(s => s.classList.remove('active'));
+  const alvo = document.getElementById('v-' + v) || document.getElementById('v-painel');
+  alvo.classList.add('active');
+  document.querySelectorAll('.sidebar a[data-view], .bottomnav a').forEach(a => {
+    if (a.dataset.view === v) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  });
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  alvo.focus({ preventScroll: true });
+}
+document.querySelectorAll('[data-view]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  const v = a.dataset.view;
+  history.replaceState(null, '', '#' + v);
+  mostrarVista(v);
+}));
+window.addEventListener('hashchange', () => {
+  if (location.hash.slice(1)) mostrarVista(location.hash.slice(1));
+});
+mostrarVista(location.hash.slice(1) || 'painel');
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href="#"]');
+  if (a) e.preventDefault();
+});
+</script>
+
 <!-- PROTONAV — navegação de apoio do protótipo, injetada pelo build.py em todas as telas.
      NÃO faz parte do produto. O conteúdo do mapa vem do dict MAPA do build.py (fonte única). -->
 <style>
@@ -384,7 +563,7 @@ a:hover{text-decoration-thickness:2px}
 <section class="pn-area"><h3>🔐 Superadmin</h3><ul class="pn-telas"><li><a href="sup-work.html">Workspace — app do perfil</a></li><li><a href="controle.html">Parâmetros (Leilão &amp; Take-rate)</a></li></ul><p class="pn-vistas">Vistas: <a href="sup-work.html#rbac">Usuários &amp; RBAC</a> &middot; <a href="sup-work.html#risco">Risco &amp; Compliance</a> &middot; <a href="sup-work.html#financiadores">Financiadores</a> &middot; <a href="sup-work.html#integracoes">Integrações</a> &middot; <a href="sup-work.html#auditoria">Auditoria</a></p></section>
 <section class="pn-area"><h3>🚪 Aquisição — funil de 21 passos (D18)</h3><ul class="pn-telas"><li><a href="fun-01.html">1. Boas-vindas</a></li><li><a href="fun-02.html">2. O que é antecipar</a></li><li><a href="fun-03.html">3. O preço cai na sua frente</a></li><li><a href="fun-04.html">4. Checagem de interesse</a></li><li><a href="fun-05.html">5. Objetivo — os três papéis</a></li><li><a href="fun-06.html">6. Já antecipa hoje?</a></li><li><a href="fun-07.html">7. Com quem antecipa</a></li><li><a href="fun-08.html">8. Faixa de faturamento</a></li><li><a href="fun-09.html">9. Setor</a></li><li><a href="fun-10.html">10. Tipo de instituição (Financiador)</a></li><li><a href="fun-11.html">11. Faixa de tíquete (Financiador)</a></li><li><a href="fun-12.html">12. Tipo de canal (Originador)</a></li><li><a href="fun-13.html">13. Tamanho da carteira (Originador)</a></li><li><a href="fun-14.html">14. Prazo médio</a></li><li><a href="fun-15.html">15. CNPJ</a></li><li><a href="fun-16.html">16. Representante legal</a></li><li><a href="fun-17.html">17. E-mail</a></li><li><a href="fun-18.html">18. Confirmação enviada</a></li><li><a href="fun-19.html">19. Telefone</a></li><li><a href="fun-20.html">20. Perfil detectado</a></li><li><a href="fun-21.html">21. Conta criada</a></li></ul></section>
 <section class="pn-area"><h3>🚫 Recusa por impedimento objetivo (D14)</h3><ul class="pn-telas"><li><a href="recusa-cnpj.html">CNPJ inapto na Receita</a></li><li><a href="recusa-existente.html">Empresa já cadastrada</a></li><li><a href="recusa-link.html">Link de convite expirado</a></li><li><a href="recusa-cpf.html">CPF divergente do quadro societário</a></li></ul></section>
-<section class="pn-area"><h3>🤝 Originador (D11/D20/D22)</h3><ul class="pn-telas"><li><a href="org-work.html">Painel do canal</a></li><li><a href="org-carteira.html">Carteira de Cedentes</a></li><li><a href="org-comissoes.html">Extrato de comissões</a></li><li><a href="org-nova-conta.html">Abrir conta de Cedente</a></li><li><a href="org-procuracao.html">Dentro da conta — poderes e marcador</a></li></ul></section>
+<section class="pn-area"><h3>🤝 Originador (D11/D20/D22)</h3><ul class="pn-telas"><li><a href="org-work.html">Workspace — app do perfil</a></li><li><a href="org-nova-conta.html">Abrir conta de Cedente</a></li><li><a href="org-procuracao.html">Dentro da conta — poderes e marcador</a></li></ul><p class="pn-vistas">Vistas: <a href="org-work.html#painel">Início</a> &middot; <a href="org-work.html#carteira">Carteira</a> &middot; <a href="org-work.html#procuracoes">Procurações</a> &middot; <a href="org-work.html#comissoes">Comissões</a> &middot; <a href="org-work.html#canal">Cadastro do canal</a></p></section>
 </div>
   </div>
 </div>
