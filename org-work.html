@@ -3,7 +3,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>MERCATUS — Originador — Painel do canal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){try{var t=localStorage.getItem('mercatus-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('mercatus-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <a class="skiplink" href="#conteudo">Pular para o conteúdo</a>
 <style>
 @font-face {
@@ -71,23 +71,6 @@
   --shadow-1:0 1px 2px rgb(2 6 23 / .06);
   --shadow-2:0 4px 12px rgb(2 6 23 / .10);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --color-background:#0B1220; --color-surface:#151E30;
-    --color-foreground:#F1F5F9;
-    --color-muted:#1E293B; --color-muted-foreground:#94A3B8;
-    --color-border:#2B3A52;
-    --color-primary:#E2E8F0; --color-on-primary:#0B1220;
-    --color-secondary:#93C5FD;
-    --color-accent:#38BDF8; --color-on-accent:#062A3D;
-    --color-ring:#38BDF8;
-    --color-success:#4ADE80; --color-success-bg:rgb(20 83 45 / .38);
-    --color-info:#38BDF8;    --color-info-bg:rgb(12 74 110 / .45);
-    --color-accent-bg:rgb(12 74 110 / .5);
-    --shadow-1:0 1px 2px rgb(0 0 0 / .4);
-    --shadow-2:0 4px 12px rgb(0 0 0 / .5);
-  }
-}
 :root[data-theme="dark"]{
   --color-background:#0B1220; --color-surface:#151E30;
   --color-foreground:#F1F5F9;
@@ -144,10 +127,6 @@ main{max-width:960px; margin:0 auto; padding:40px 16px 72px}
 .campo .msg-erro{display:none; margin-top:5px; font-size:12.5px; color:#DC2626}
 :root[data-theme="dark"] .campo.erro input{border-color:#F87171}
 :root[data-theme="dark"] .campo .msg-erro{color:#F87171}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .campo.erro input{border-color:#F87171}
-  :root:not([data-theme="light"]) .campo .msg-erro{color:#F87171}
-}
 .campo.erro .msg-erro{display:block}
 .seguranca{margin-top:12px; font-size:12.5px; color:var(--color-muted-foreground); display:flex; gap:8px; align-items:flex-start}
 .seguranca svg.ic{width:15px; height:15px; margin-top:2px}
@@ -540,15 +519,6 @@ document.addEventListener('click', e => {
 .pn-vistas{margin:5px 0 0;font-size:12.5px;color:#64748B}
 .pn-vistas a{color:#0369A1;text-decoration:none}
 .pn-vistas a:hover{text-decoration:underline}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) #pn-btn{background:rgba(21,30,48,.92);color:#F1F5F9;border-color:#94A3B8}
-  :root:not([data-theme="light"]) #pn-card{background:#151E30;color:#F1F5F9;border-color:#2B3A52}
-  :root:not([data-theme="light"]) #pn-card header{border-color:#2B3A52}
-  :root:not([data-theme="light"]) #pn-fechar{color:#94A3B8}
-  :root:not([data-theme="light"]) .pn-area h3,:root:not([data-theme="light"]) #pn-card header span,
-  :root:not([data-theme="light"]) .pn-vistas{color:#94A3B8}
-  :root:not([data-theme="light"]) .pn-telas a,:root:not([data-theme="light"]) .pn-vistas a{color:#7DD3FC}
-}
 :root[data-theme="dark"] #pn-btn{background:rgba(21,30,48,.92);color:#F1F5F9;border-color:#94A3B8}
 :root[data-theme="dark"] #pn-card{background:#151E30;color:#F1F5F9;border-color:#2B3A52}
 :root[data-theme="dark"] #pn-card header{border-color:#2B3A52}

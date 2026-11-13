@@ -3,7 +3,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>MERCATUS — Detalhe do Título</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){try{var t=localStorage.getItem('mercatus-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('mercatus-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <a class="skiplink" href="#conteudo">Pular para o conteúdo</a>
 <style>
 @font-face {
@@ -72,26 +72,6 @@
   --shadow-1:0 1px 2px rgb(2 6 23 / .06);
   --shadow-2:0 4px 12px rgb(2 6 23 / .10);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --color-background:#0B1220; --color-surface:#151E30;
-    --color-foreground:#F1F5F9;
-    --color-muted:#1E293B; --color-muted-foreground:#94A3B8;
-    --color-border:#2B3A52;
-    --color-primary:#E2E8F0; --color-on-primary:#0B1220;
-    --color-secondary:#93C5FD;
-    --color-accent:#38BDF8; --color-on-accent:#062A3D;
-    --color-ring:#38BDF8;
-    --color-success:#4ADE80; --color-success-bg:rgb(20 83 45 / .38);
-    --color-warning:#FBBF24; --color-warning-bg:rgb(120 53 15 / .38);
-    --color-danger:#F87171;  --color-danger-bg:rgb(127 29 29 / .38);
-    --color-info:#38BDF8;    --color-info-bg:rgb(12 74 110 / .45);
-    --color-neutral:#94A3B8; --color-neutral-bg:rgb(51 65 85 / .45);
-    --color-accent-bg:rgb(12 74 110 / .5);
-    --shadow-1:0 1px 2px rgb(0 0 0 / .4);
-    --shadow-2:0 4px 12px rgb(0 0 0 / .5);
-  }
-}
 :root[data-theme="dark"]{
   --color-background:#0B1220; --color-surface:#151E30;
   --color-foreground:#F1F5F9;
@@ -139,7 +119,6 @@ svg.ic{width:20px; height:20px; stroke:currentColor; stroke-width:1.5; fill:none
 .avatar{width:32px; height:32px; border-radius:50%; background:var(--color-secondary); color:#fff;
   display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:600}
 :root[data-theme="dark"] .avatar{color:#0B1220}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .avatar{color:#0B1220} }
 .iconbtn{width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center;
   border-radius:var(--radius-md); color:var(--color-muted-foreground); position:relative}
 .iconbtn:hover{background:var(--color-muted); color:var(--color-foreground)}
@@ -301,8 +280,7 @@ dialog.docdlg .btn.ghost:hover{background:var(--color-muted)}
       <div class="segmented" role="group" aria-labelledby="theme-label">
         <button data-theme-set="light" aria-pressed="false"><svg class="ic"><use href="#i-sun"/></svg>Claro</button>
         <button data-theme-set="dark" aria-pressed="false"><svg class="ic"><use href="#i-moon"/></svg>Escuro</button>
-        <button data-theme-set="system" aria-pressed="true"><svg class="ic"><use href="#i-monitor"/></svg>Sistema</button>
-      </div>
+</div>
     </div>
   </details>
 </header>
@@ -482,13 +460,12 @@ dialog.docdlg .btn.ghost:hover{background:var(--color-muted)}
   const root = document.documentElement;
   document.querySelectorAll('[data-theme-set]').forEach(btn => {
     const mode = btn.getAttribute('data-theme-set');
-    const cur0 = root.getAttribute('data-theme') || 'system';
+    const cur0 = root.getAttribute('data-theme') || 'light';
     btn.setAttribute('aria-pressed', String(cur0 === mode));
     btn.addEventListener('click', () => {
-      if (mode === 'system') { root.removeAttribute('data-theme'); localStorage.removeItem('mercatus-theme'); }
-      else { root.setAttribute('data-theme', mode); localStorage.setItem('mercatus-theme', mode); }
+      root.setAttribute('data-theme', mode); localStorage.setItem('mercatus-theme', mode);
       document.querySelectorAll('[data-theme-set]').forEach(b => {
-        const cur = root.getAttribute('data-theme') || 'system';
+        const cur = root.getAttribute('data-theme') || 'light';
         b.setAttribute('aria-pressed', String(cur === b.getAttribute('data-theme-set')));
       });
     });
@@ -556,15 +533,6 @@ dialog.docdlg .btn.ghost:hover{background:var(--color-muted)}
 .pn-vistas{margin:5px 0 0;font-size:12.5px;color:#64748B}
 .pn-vistas a{color:#0369A1;text-decoration:none}
 .pn-vistas a:hover{text-decoration:underline}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) #pn-btn{background:rgba(21,30,48,.92);color:#F1F5F9;border-color:#94A3B8}
-  :root:not([data-theme="light"]) #pn-card{background:#151E30;color:#F1F5F9;border-color:#2B3A52}
-  :root:not([data-theme="light"]) #pn-card header{border-color:#2B3A52}
-  :root:not([data-theme="light"]) #pn-fechar{color:#94A3B8}
-  :root:not([data-theme="light"]) .pn-area h3,:root:not([data-theme="light"]) #pn-card header span,
-  :root:not([data-theme="light"]) .pn-vistas{color:#94A3B8}
-  :root:not([data-theme="light"]) .pn-telas a,:root:not([data-theme="light"]) .pn-vistas a{color:#7DD3FC}
-}
 :root[data-theme="dark"] #pn-btn{background:rgba(21,30,48,.92);color:#F1F5F9;border-color:#94A3B8}
 :root[data-theme="dark"] #pn-card{background:#151E30;color:#F1F5F9;border-color:#2B3A52}
 :root[data-theme="dark"] #pn-card header{border-color:#2B3A52}
